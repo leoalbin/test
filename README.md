@@ -9,6 +9,7 @@ Welcome to Leo Albin's Test
 [Video demo 2](https://www.loom.com/share/46c275d0b6594f9a8708412b6875a6e5)
 
 #
+#
 
 **Backend**:
 
@@ -42,33 +43,43 @@ In the front end we are using React and some extra libraries from Redwood.js to 
 
 The concepts I'm applying in the front end are:
 
-- **Atomic design**:
-- I'm implementing atoms for small indivisible parts of the design, like Title, ScrollArea, Text, etc
+**Atomic design**:
 
-- **Composition pattern**:
-- For example, I created a Sidebar component with a context, and building blocks, like "`Sidebar.Root`", "`Sidebar.Link`" etc. Here we are applying the Open Close principle, we could create different versions of the Sidebar without modifying existing/breaking instances.
+I'm implementing atoms for small indivisible parts of the design, like Title, ScrollArea, Text, etc
 
-- **Feature collocation** file structure
-- We organize the project around features to improve the discoverability of the code-ba
+**Composition pattern**:
 
-- **Single responsibility**
-- We try to make the components as small and simple as possible. We prefer to use children composition than passing big amounts of properties to compose small building blocks into bigger structures.
+For example, I created a Sidebar component with a context, and building blocks, like "`Sidebar.Root`", "`Sidebar.Link`" etc. Here we are applying the Open Close principle, we could create different versions of the Sidebar without modifying existing/breaking instances.
 
-- **Higher Order Component**
-- To reuse the logic of rendering different components when the fetching is in different states (loading, success, error, empty) we created a HOC withQuery, that receives the Query and the different components as parameters.
+**Feature collocation** file structure
 
-- **Testing**
-- I made basic testing to ensure any component throws an error, which covers 80% of the bugs related to a front-end component without having to implement expensive tests against implementation details.
+We organize the project around features to improve the discoverability of the code-ba
 
-- **Styling**
-- I'm using utlity first approach through Tailwind as it is a faster way to prototype design coding when you don't have a design system. It's also super efficient on laoding performance.
+**Single Responsibility**
 
-- **State management**
-- We did a simple state managment implementation in the SidebarProvider and sharing the state using the react context pattern.
+We try to make the components as small and simple as possible. We prefer to use children composition than passing big amounts of properties to compose small building blocks into bigger structures. It also renders more efficiently.
 
-- **Design**
-- We try to apply some UI designing concepts like: readability, color contrast, consistent padding and margin, consistent color palette, size text contrast, key points of attention using color (logo, button)
-- We have used dark mode that is set automatically by the system preferences.
+**Higher Order Component**
+
+To reuse the logic of rendering different components when the fetching is in different states (loading, success, error, empty) we created a HOC withQuery, that receives the Query and the different components as parameters.
+
+**Testing**
+
+I made basic testing to ensure any component throws an error, which covers 80% of the bugs related to a front-end component without having to implement expensive tests against implementation details.
+
+**Styling**
+
+I'm using utlity first approach through Tailwind as it is a faster way to prototype design coding when you don't have a design system. It's also super efficient on laoding performance.
+
+**State management**
+
+We did a simple state managment implementation in the SidebarProvider and sharing the state using the react context pattern.
+
+**Design**
+
+We try to apply some UI designing concepts like: readability, color contrast, consistent padding and margin, consistent color palette, size text contrast, key points of attention using color (logo, button)
+
+We have used dark mode that is set automatically by the system preferences.
 
 Things to add:
 
@@ -76,7 +87,6 @@ Things to add:
 - Adding success message to the CreateExerciseForm
 - Improving responsive design glitches
 - Add a container with max-width for larger
-
 
 
 **About the framework**:
