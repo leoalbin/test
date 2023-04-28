@@ -10,17 +10,13 @@ import { IUserRepo } from '../../repos/IUserRepo'
 
 import { CreateExerciseErrors } from './CreateExerciseErrors'
 
-interface CreateExerciseDTO {
+export interface CreateExerciseDTO {
   userId: string
   content: string
 }
 
-type CreateExerciseResponse = Either<
-  | CreateExerciseErrors.ExcersiceLimitReached
-  | CreateExerciseErrors.UserNotFound
-  | CreateExerciseErrors.ExerciseContentTooLong
-  | AppError.UnexpectedError
-  | Result<any>,
+export type CreateExerciseResponse = Either<
+  CreateExerciseErrors.UserNotFound | AppError.UnexpectedError | Result<any>,
   Result<void>
 >
 

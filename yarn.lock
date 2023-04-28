@@ -8229,6 +8229,7 @@ __metadata:
   dependencies:
     "@redwoodjs/api": 4.5.0
     "@redwoodjs/graphql-server": 4.5.0
+    dompurify: ^3.0.2
     uuid: ^9.0.0
   languageName: unknown
   linkType: soft
@@ -11755,6 +11756,13 @@ __metadata:
   dependencies:
     domelementtype: ^2.3.0
   checksum: bba1e5932b3e196ad6862286d76adc89a0dbf0c773e5ced1eb01f9af930c50093a084eff14b8de5ea60b895c56a04d5de8bbc4930c5543d029091916770b2d2a
+  languageName: node
+  linkType: hard
+
+"dompurify@npm:^3.0.2":
+  version: 3.0.2
+  resolution: "dompurify@npm:3.0.2"
+  checksum: eadd82ee50b0a7de288d2f4dec843ca522ed4e2ae194c4f10833ffbeb40ab35749d43994c61be9d7d29adfd354aefbc0dc083ce78c18359fa12a044cc271c0b0
   languageName: node
   linkType: hard
 

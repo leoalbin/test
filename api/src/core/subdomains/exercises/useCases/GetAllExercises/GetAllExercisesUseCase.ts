@@ -9,11 +9,11 @@ import { IUserRepo } from '../../repos/IUserRepo'
 
 import { GetAllExercisesErrors } from './GetAllExercisesErrors'
 
-interface GetAllExercisesRequest {
+export interface GetAllExercisesRequest {
   userId: string
 }
 
-interface ExerciseDTO {
+export interface ExerciseDTO {
   id: string
   user_id: string
   content: string
@@ -23,7 +23,7 @@ interface ExerciseDTO {
   }
 }
 
-type GetAllExercisesResponse = Either<
+export type GetAllExercisesResponse = Either<
   GetAllExercisesErrors.UserNotFound | AppError.UnexpectedError | Result<any>,
   Result<ExerciseDTO[]>
 >
