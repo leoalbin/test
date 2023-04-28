@@ -4,7 +4,8 @@ Welcome to Leo Albin's Test
 
 **Video demos**:
 
-[Video demo 1](https://www.loom.com/share/8eace1b4856b4ed880cc5005ee048c2d)
+[Video demo 1](https://www.loom.com/share/8eace1b4856b4ed880cc5005ee048c2d) ||
+
 [Video demo 2](https://www.loom.com/share/46c275d0b6594f9a8708412b6875a6e5)
 
 
