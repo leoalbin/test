@@ -9,9 +9,14 @@
 
 import { Router, Route } from '@redwoodjs/router'
 
+import CreateExercisePage from './features/exercises/create/pages/CreateExercisePage/CreateExercisePage'
+import ExercisesPage from './features/exercises/list/pages/ExercisesPage/ExercisesPage'
+
 const Routes = () => {
   return (
     <Router>
+      <Route path="/exercises" page={ExercisesPage} name="exercises" />
+      <Route path="/exercises/create" page={CreateExercisePage} name="createExercise" />
       <Route notfound page={NotFoundPage} />
     </Router>
   )
