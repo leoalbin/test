@@ -1,10 +1,70 @@
 # README
 
-Welcome to [RedwoodJS](https://redwoodjs.com)!
+Welcome to Leo Albin's Test
+
+
+Backend:
+
+I'm following Clean Architecture for the general architecture of the project. The main concept I'm applying here is to separate Domain, Application and Infrastructure layers by using dependency injection and inversion of control implementing Adapters against interfaces. We are using the design patterns Adapter, and Repository to isolate the application layer from the infrastructure layer. We implement the application layer use cases using interfaces of repositories. Then we instanciate the use cases classes injection the actual implementation of those interfaces. For example, we have IUserRepo interface, where we define all the methods we need to get and save User instances. Then we implement a concretion of that interface using Prisma ORM in PrismaUserRepo. The repositories return always an instance of a domain object, for doing that we implement mappers, with methods "toDomain" and "toPersistence". We could also add "toDTO" in some cases.
+
+As part of this separation of concerns in layers, we have all the core code in the folder the folder "core" inside of /api/src/core.  This folder contains all the domain code, nothing related with infrastructure or framework except the repos implementations and the use case controllers. These implementation should be changed if the project needs to be migrated to a another framework.
+
+We are applying the idea of not coupling to the framework, infrastructure or any implementation detail. the only thing is that the "core" folder is inside of api folder from redwood to avoid having to configure some building scripts, but I would move it to the root of the project.
+
+For the code design and modelling I'm using DDD. The project was simple enought to use a MVC pattern with CRUD services, but I wanted to use DDD just to demostrate understanding on these desing patterns. I'm modelling the User and the Excercises as Aggregate Roots. Each of these Aggregates contains Objects Values like UserName or ExerciseContent.
+
+The main idea I wanted to demonstrate here is the sense of collocating bussiness rules inside of the domain layer where it corresponds. So, for example, you could not create an ExerciseContent with a length bigger than 100 character. This is a bussiness rule, and the one in charge of validating this is the Value Object ExcerciseContent. The second business rule provided on the specs was that a User could not have more than ten excercises. I added 'excercises' as a property of the instance User, I'm modelling the user "having" excercises. Then I created a method in the User class to add exercises, and this method will validate if the user has reach the limit. Other option here, that would made the design simpler, was to move that rule to the application layer, get all the exercises, count how much have the same userId and prevent the creation of a new one, but it would be an anemic modelling.
+
+The file structure is following DDD as well. Inside of "core" we have a shared folder with abstract classes that we use in all subdomains, and then the subdomains Exercises and Users. For the scope of the project would be fine to have only one subdomain, but if the project would be bigger, it seems like User and Excercises belong to different contexts. It's important to notice, that the file structure is not representing layers, we are collocating based on the use cases to simplify the code discoverability. You will find the controller (infra) and the use case (application) in the same folder, also the repos implementations are in the same folder as the interfaces.
+
+The testing approach I'm taking is Acceptance testing in general. I'm writing test to the use cases following the pattern Given, When, Then. I know if the application logic is working, the domain logic is also working. But also added unit testing for the Exercise class to show a case of unit testing.
+
+The error handling is also separated in layers, there a use case errors, domain errors are infrastructure errors. We are using a Result class to standarize domain error handling, and an Either monad to type the results of the use cases. For example if a instance of a ExerciseContent could not be created because the content is longer than 100 it will return a Result.fail() but it will not throw an error, it will be passed to the application layer where we are going handle that failed domain result and if there is nothing else to do we are going to return a Left use case result, then the controller is the one that will translate this left result into a throw or a graphQL error or a HTTP code.
+
+On the database modelling I crated the entities following the specs and set a relation 1-n, one User many Excercises setting the userId prop in Exercise as a foreign key to the User id. We have two separate tables to normalize the data, will make no sense to store the same user in each Exercise row. We are setting constrains in the id's of the User and the Exercise as primary keys.
+
+
+Front end:
+
+In the front-end we are using React and some extra libraries from Redwood.js to handle routes and forms (is wrapper to react-hook-forms).
+
+The concepts I'm applying in the front-end are:
+
+- Atomic design:
+I'm implementing atoms for small indivisible parts of the desing, like Title, ScrollArea, Text, etc.
+
+- Composition pattern:
+For example, I created Sidebar component with a context, and building blocks, like "Sidebar.Root", "Sidebar.Link" etc.Here we are applying the Open Close principle, we could create different versions of the Sidebar without modifying existing/breaking instances.
+
+- Feature collocation file structure
+We organize the project around features to improve the discoverability of the code-base.
+
+- Single responsibility
+We try to make the components as smallers and simple as possible. We prefer tu use children composition than passing big amounts of properties to compose small building blocks into bigger structures.
+
+- Higher Order Component
+To reuse the logic of rendering different components when the fetching is different states (loading, success, error, empty) we created an HOC withQuery, that receives the Query and the different components as parameters.
+
+- Testing
+I made a basic testing to ensure any component throw an error, that covers 80% of the bugs related to a front-end compoenent without having to implement expensive tests against implementation details.
+
+- Styling
+- I'm using utlity first approach through Tailwind as it is a faster way to prototype design coding when you don't have a design system. It's also super efficient on laoding performance.
+
+- Dark Mode
+- We have used dark mode that is set automatically by the system preferences.
+
+- State management
+- We did a simple state managment implementation in the SidebarProvider and sharing the state using the react context pattern.
+
+- Design
+- We try to apply some UI designing concepts like: readability, color contrast, consistent padding and margin, consistent color palette, size text contrast, key points of attention using color (logo, button)
+
+
 
 > **Prerequisites**
 >
-> - Redwood requires [Node.js](https://nodejs.org/en/) (>=14.19.x <=16.x) and [Yarn](https://yarnpkg.com/) (>=1.15)
+> - Redwood requires [Node.js](https://nodejs.org/en/) (>=18.0.x) and [Yarn](https://yarnpkg.com/) (>=1.15)
 > - Are you on Windows? For best results, follow our [Windows development setup](https://redwoodjs.com/docs/how-to/windows-development-setup) guide
 
 Start by installing dependencies:
@@ -22,68 +82,6 @@ yarn redwood dev
 
 Your browser should automatically open to http://localhost:8910 where you'll see the Welcome Page, which links out to a ton of great resources.
 
-> **The Redwood CLI**
->
-> Congratulations on running your first Redwood CLI command!
-> From dev to deploy, the CLI is with you the whole way.
-> And there's quite a few commands at your disposal:
-> ```
-> yarn redwood --help
-> ```
-> For all the details, see the [CLI reference](https://redwoodjs.com/docs/cli-commands).
-
-## Prisma and the database
-
-Redwood wouldn't be a full-stack framework without a database. It all starts with the schema. Open the [`schema.prisma`](api/db/schema.prisma) file in `api/db` and replace the `UserExample` model with the following `Post` model:
-
-```
-model Post {
-  id        Int      @id @default(autoincrement())
-  title     String
-  body      String
-  createdAt DateTime @default(now())
-}
-```
-
-Redwood uses [Prisma](https://www.prisma.io/), a next-gen Node.js and TypeScript ORM, to talk to the database. Prisma's schema offers a declarative way of defining your app's data models. And Prisma [Migrate](https://www.prisma.io/migrate) uses that schema to make database migrations hassle-free:
-
-```
-yarn rw prisma migrate dev
-
-# ...
-
-? Enter a name for the new migration: › create posts
-```
-
-> `rw` is short for `redwood`
-
-You'll be prompted for the name of your migration. `create posts` will do.
-
-Now let's generate everything we need to perform all the CRUD (Create, Retrieve, Update, Delete) actions on our `Post` model:
-
-```
-yarn redwood g scaffold post
-```
-
-Navigate to http://localhost:8910/posts/new, fill in the title and body, and click "Save":
-
-Did we just create a post in the database? Yup! With `yarn rw g scaffold <model>`, Redwood created all the pages, components, and services necessary to perform all CRUD actions on our posts table.
-
-## Frontend first with Storybook
-
-Don't know what your data models look like?
-That's more than ok—Redwood integrates Storybook so that you can work on design without worrying about data.
-Mockup, build, and verify your React components, even in complete isolation from the backend:
-
-```
-yarn rw storybook
-```
-
-Before you start, see if the CLI's `setup ui` command has your favorite styling library:
-
-```
-yarn rw setup ui --help
-```
 
 ## Testing with Jest
 
@@ -93,29 +91,3 @@ Redwood fully integrates Jest with the front and the backends and makes it easy 
 ```
 yarn rw test
 ```
-
-To make the integration even more seamless, Redwood augments Jest with database [scenarios](https://redwoodjs.com/docs/testing.md#scenarios)  and [GraphQL mocking](https://redwoodjs.com/docs/testing.md#mocking-graphql-calls).
-
-## Ship it
-
-Redwood is designed for both serverless deploy targets like Netlify and Vercel and serverful deploy targets like Render and AWS:
-
-```
-yarn rw setup deploy --help
-```
-
-Don't go live without auth!
-Lock down your front and backends with Redwood's built-in, database-backed authentication system ([dbAuth](https://redwoodjs.com/docs/authentication#self-hosted-auth-installation-and-setup)), or integrate with nearly a dozen third party auth providers:
-
-```
-yarn rw setup auth --help
-```
-
-## Next Steps
-
-The best way to learn Redwood is by going through the comprehensive [tutorial](https://redwoodjs.com/docs/tutorial/foreword) and joining the community (via the [Discourse forum](https://community.redwoodjs.com) or the [Discord server](https://discord.gg/redwoodjs)).
-
-## Quick Links
-
-- Stay updated: read [Forum announcements](https://community.redwoodjs.com/c/announcements/5), follow us on [Twitter](https://twitter.com/redwoodjs), and subscribe to the [newsletter](https://redwoodjs.com/newsletter)
-- [Learn how to contribute](https://redwoodjs.com/docs/contributing)
