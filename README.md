@@ -2,8 +2,13 @@
 
 Welcome to Leo Albin's Test
 
+**Video demos**:
 
-Backend:
+[Video demo 1](https://www.loom.com/share/8eace1b4856b4ed880cc5005ee048c2d)
+[Video demo 2](https://www.loom.com/share/46c275d0b6594f9a8708412b6875a6e5)
+
+
+**Backend**:
 
 I'm following Clean Architecture for the general architecture of the project. The main concept I'm applying here is to separate Domain, Application and Infrastructure layers by using dependency injection and inversion of control implementing Adapters against interfaces. We are using the design patterns Adapter, and Repository to isolate the application layer from the infrastructure layer. We implement the application layer use cases using interfaces of repositories. Then we instanciate the use cases classes injection the actual implementation of those interfaces. For example, we have IUserRepo interface, where we define all the methods we need to get and save User instances. Then we implement a concretion of that interface using Prisma ORM in PrismaUserRepo. The repositories return always an instance of a domain object, for doing that we implement mappers, with methods "toDomain" and "toPersistence". We could also add "toDTO" in some cases.
 
@@ -19,12 +24,16 @@ The file structure is following DDD as well. Inside of "core" we have a shared f
 
 The testing approach I'm taking is Acceptance testing in general. I'm writing test to the use cases following the pattern Given, When, Then. I know if the application logic is working, the domain logic is also working. But also added unit testing for the Exercise class to show a case of unit testing.
 
-The error handling is also separated in layers, there a use case errors, domain errors are infrastructure errors. We are using a Result class to standarize domain error handling, and an Either monad to type the results of the use cases. For example if a instance of a ExerciseContent could not be created because the content is longer than 100 it will return a Result.fail() but it will not throw an error, it will be passed to the application layer where we are going handle that failed domain result and if there is nothing else to do we are going to return a Left use case result, then the controller is the one that will translate this left result into a throw or a graphQL error or a HTTP code.
+The error handling is also separated in layers, there a use case errors, domain errors are infrastructure errors. We are using a Result class to standarize domain error handling, and an Either monad to type the results of the use cases. For example if a instance of a ExerciseContent could not be created because the content is longer than 100 it will return a Result.fail() but it will not throw an error, it will be passed to the application layer where we are going handle that failed domain result and if there is nothing else to do we are going to return a Left use case result, then the controller is the one that will translate this left result into a throw or a graphQL error or a HTTP code. The controller masks the errors as well to not give a lot of details to the front-end for security concerns.
 
 On the database modelling I crated the entities following the specs and set a relation 1-n, one User many Excercises setting the userId prop in Exercise as a foreign key to the User id. We have two separate tables to normalize the data, will make no sense to store the same user in each Exercise row. We are setting constrains in the id's of the User and the Exercise as primary keys.
 
+Things I would like to add:
+- Authentication and authorization to the controllers
+- Pagination to the GetAllExercisesUseCase
 
-Front end:
+
+**Front end**:
 
 In the front-end we are using React and some extra libraries from Redwood.js to handle routes and forms (is wrapper to react-hook-forms).
 
@@ -60,7 +69,17 @@ I made a basic testing to ensure any component throw an error, that covers 80% o
 - Design
 - We try to apply some UI designing concepts like: readability, color contrast, consistent padding and margin, consistent color palette, size text contrast, key points of attention using color (logo, button)
 
+Things to add:
+- Clean a little bit more the code, splitting some files.
+- Adding success message to the CreateExerciseForm
+- Improving responsive design glitches
+- Add a container with max-width for larger
 
+
+
+**About the framework**:
+
+Below some guide items to set the server and the tests running
 
 > **Prerequisites**
 >
