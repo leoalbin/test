@@ -1,11 +1,11 @@
 import { UniqueEntityID } from 'src/core/shared/domain/UniqueEntityId'
 
+import { User } from '../../../users/domain/User'
+import { UserName } from '../../../users/domain/UserName'
 import { Exercise } from '../../domain/Exercise'
 import { ExerciseContent } from '../../domain/ExerciseContent'
-import { User } from '../../domain/User'
-import { UserName } from '../../domain/UserName'
 import { IExerciseRepo } from '../../repos/IExerciseRepo'
-import { IUserRepo } from '../../repos/IUserRepo'
+import { IUserRepo } from '../../../users/repos/IUserRepo'
 
 import { CreateExerciseUseCase } from './CreateExerciseUseCase'
 
@@ -14,12 +14,18 @@ describe('Create exercise', () => {
     {
       id: 'e8db8fe0-e0bf-4fff-87d0-1ed369b6acd0',
       user_id: '1fd9b205-6aa3-41e5-8cbd-54bfe3753c22',
+      user: {
+        name: 'Foo Bar',
+      },
       content: 'Sample Exercise',
       created_at: '2021-06-11T02:17:32-07:00',
     },
     {
       id: '14a1ab60-2a17-4afb-818b-8f7386196414',
       user_id: '1fd9b205-6aa3-41e5-8cbd-54bfe3753c22',
+      user: {
+        name: 'Foo Bar',
+      },
       content: 'Another Exercise',
       created_at: '2021-06-11T02:17:32-07:00',
     },
@@ -31,10 +37,18 @@ describe('Create exercise', () => {
         Exercise.create(
           {
             userId: new UniqueEntityID(exercise.user_id),
+            user: User.create(
+              {
+                name: UserName.create({
+                  name: exercise.user.name,
+                }).getValue(),
+              },
+              new UniqueEntityID(exercise.user_id)
+            ).getValue(),
             content: ExerciseContent.create({
               content: exercise.content,
             }).getValue(),
-            createdAt: new Date(exercise.created_at),
+            createdAt: exercise.created_at,
           },
           new UniqueEntityID(exercise.id)
         ).getValue()
@@ -45,7 +59,10 @@ describe('Create exercise', () => {
         id: exercise.id.toString(),
         user_id: exercise.userId.toString(),
         content: exercise.content.value,
-        created_at: exercise.createdAt.toISOString(),
+        created_at: exercise.createdAt,
+        user: {
+          name: exercise.user.name.value,
+        },
       })
     },
   } as unknown as IExerciseRepo
@@ -67,7 +84,7 @@ describe('Create exercise', () => {
                   content: ExerciseContent.create({
                     content: exercise.content,
                   }).getValue(),
-                  createdAt: new Date(exercise.created_at),
+                  createdAt: exercise.created_at,
                 },
                 new UniqueEntityID(exercise.id)
               ).getValue()
@@ -133,7 +150,7 @@ describe('Create exercise', () => {
       id: new UniqueEntityID(),
       user_id: userId,
       content: `Sample Exercise->${Math.random()}`,
-      created_at: new Date(),
+      created_at: new Date().toISOString(),
     }))
 
     usersRepositoryMock.getUserById = jest.fn().mockReturnValue(
@@ -147,7 +164,7 @@ describe('Create exercise', () => {
                 content: ExerciseContent.create({
                   content: exercise.content,
                 }).getValue(),
-                createdAt: new Date(exercise.created_at),
+                createdAt: exercise.created_at,
               },
               exercise.id
             ).getValue()

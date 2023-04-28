@@ -4,9 +4,9 @@ import { Either, Result, left, right } from 'src/core/shared/core/Result/Result'
 
 import { Exercise } from '../../domain/Exercise'
 import { ExerciseContent } from '../../domain/ExerciseContent'
-import { User } from '../../domain/User'
+import { User } from '../../../users/domain/User'
 import { IExerciseRepo } from '../../repos/IExerciseRepo'
-import { IUserRepo } from '../../repos/IUserRepo'
+import { IUserRepo } from '../../../users/repos/IUserRepo'
 
 import { CreateExerciseErrors } from './CreateExerciseErrors'
 
@@ -40,7 +40,8 @@ export class CreateExerciseUseCase
 
     try {
       user = await this.userRepo.getUserById(request.userId)
-    } catch {
+    } catch (e) {
+      console.log('e', e)
       return left(new CreateExerciseErrors.UserNotFound())
     }
 
@@ -56,8 +57,9 @@ export class CreateExerciseUseCase
 
     const newExcerciseOrError = Exercise.create({
       userId: user.id,
+      user: user,
       content: newExcerciseContent,
-      createdAt: new Date(),
+      createdAt: new Date().toISOString(),
     })
     if (newExcerciseOrError.isFailure) {
       return left(newExcerciseOrError)

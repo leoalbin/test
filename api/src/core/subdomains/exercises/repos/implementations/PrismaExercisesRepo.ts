@@ -5,9 +5,9 @@ import { ExerciseMapper } from '../../mappers/ExerciseMapper'
 import { IExerciseRepo } from '../IExerciseRepo'
 
 export class PrismaExercisesRepo implements IExerciseRepo {
-  async save(exercise: Exercise): Promise<void> {
-    const rawExercise = await ExerciseMapper.toPersistence(exercise)
-    db.exercise.upsert({
+  async save(exercise: Exercise): Promise<any> {
+    const rawExercise = ExerciseMapper.toPersistence(exercise)
+    return db.exercise.upsert({
       where: {
         id: rawExercise.id,
       },
@@ -25,10 +25,14 @@ export class PrismaExercisesRepo implements IExerciseRepo {
     })
   }
 
-  async getExercisesByUserId(userId: string): Promise<Exercise[]> {
+  async getAll(): Promise<Exercise[]> {
     const rawExercises = await db.exercise.findMany({
-      where: {
-        user_id: userId,
+      include: {
+        user: {
+          select: {
+            name: true,
+          },
+        },
       },
     })
 

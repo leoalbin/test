@@ -1,18 +1,17 @@
-export abstract class BaseController {
-  protected abstract executeImpl(req: any): Promise<void | any>
+import {
+  AuthenticationError,
+  ForbiddenError,
+  UserInputError,
+  ValidationError,
+  SyntaxError,
+} from '@redwoodjs/graphql-server'
 
-  public async execute(req: any): Promise<void> {
-    try {
-      await this.executeImpl(req)
-    } catch (err) {
-      console.log(`[BaseController]: Uncaught controller error`)
-      console.log(err)
-      this.fail('An unexpected error occurred')
-    }
-  }
+export abstract class BaseController {
+  protected abstract execute(req?: any): Promise<void | any>
 
   public ok<T>(dto?: T) {
     if (dto) {
+      console.log('dto', dto)
       return dto
     }
     return {
@@ -27,38 +26,38 @@ export abstract class BaseController {
   }
 
   public clientError(message?: string) {
-    throw new Error(message || 'Unauthorized')
+    throw new UserInputError(message || 'Unauthorized')
   }
 
   public unauthorized(message?: string) {
-    throw new Error(message || 'Unauthorized')
+    throw new AuthenticationError(message || 'Unauthorized')
   }
 
   public paymentRequired(message?: string) {
-    throw new Error(message || 'Payment required')
+    throw new ForbiddenError(message || 'Payment required')
   }
 
   public forbidden(message?: string) {
-    throw new Error(message || 'Forbidden')
+    throw new ForbiddenError(message || 'Forbidden')
   }
 
   public notFound(message?: string) {
-    throw new Error(message || 'Not found')
+    throw new ValidationError(message || 'Not found')
   }
 
   public conflict(message?: string) {
-    throw new Error(message || 'Conflict')
+    throw new ValidationError(message || 'Conflict')
   }
 
   public tooMany(message?: string) {
-    throw new Error(message || 'Too many requests')
+    throw new ValidationError(message || 'Too many requests')
   }
 
   public todo(message: any) {
-    throw new Error(message || 'TODO')
+    throw new SyntaxError(message || 'TODO')
   }
 
   public fail(message: any) {
-    throw new Error(message || 'Something went wrong')
+    throw new SyntaxError(message || 'Something went wrong')
   }
 }

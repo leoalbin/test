@@ -2,12 +2,15 @@ import { Result } from 'src/core/shared/core/Result/Result'
 import { Entity } from 'src/core/shared/domain/Entity'
 import { UniqueEntityID } from 'src/core/shared/domain/UniqueEntityId'
 
+import { User } from '../../users/domain/User'
+
 import { ExerciseContent } from './ExerciseContent'
 
 interface ExerciseProps {
   userId: UniqueEntityID
+  user?: User
   content: ExerciseContent
-  createdAt: Date
+  createdAt: string
 }
 
 export class Exercise extends Entity<ExerciseProps> {
@@ -31,11 +34,15 @@ export class Exercise extends Entity<ExerciseProps> {
     return this.props.userId
   }
 
+  get user(): User {
+    return this.props.user
+  }
+
   get content(): ExerciseContent {
     return this.props.content
   }
 
-  get createdAt(): Date {
+  get createdAt(): string {
     return this.props.createdAt
   }
 }

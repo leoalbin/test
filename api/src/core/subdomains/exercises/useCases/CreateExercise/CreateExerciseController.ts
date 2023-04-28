@@ -17,7 +17,7 @@ export class CreateExerciseController extends BaseController {
     this.useCase = useCase
   }
 
-  async executeImpl(req: any): Promise<any> {
+  async execute(req: any): Promise<any> {
     let dto: CreateExerciseDTO = req
 
     dto = {
@@ -27,7 +27,6 @@ export class CreateExerciseController extends BaseController {
 
     try {
       const result: CreateExerciseResponse = await this.useCase.execute(dto)
-
       if (result.isRight()) {
         const response = result.value.getValue()
         return this.ok<void>(response)
@@ -37,9 +36,9 @@ export class CreateExerciseController extends BaseController {
         const error = result.value
         switch (error.constructor) {
           case CreateExerciseErrors.UserNotFound:
-            return this.notFound(error.getErrorValue().message)
+            return this.notFound(result.value.getErrorValue().message)
           default:
-            return this.fail(error.getErrorValue().message)
+            return this.fail(result.value.getErrorValue())
         }
       }
 

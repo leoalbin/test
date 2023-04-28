@@ -1,22 +1,35 @@
 import { UniqueEntityID } from 'src/core/shared/domain/UniqueEntityId'
 
+import { User } from '../../users/domain/User'
+import { UserName } from '../../users/domain/UserName'
 import { Exercise } from '../domain/Exercise'
+import { ExerciseContent } from '../domain/ExerciseContent'
 
 export class ExerciseMapper {
-  static toPersistence(exercise) {
+  static toPersistence(exercise: Exercise) {
     return {
       id: exercise.id.toString(),
       user_id: exercise.userId.toString(),
-      content: exercise.content,
+      content: exercise.content.value,
       createdAt: exercise.createdAt,
     }
   }
-  static toDomain(rawExercise) {
+  static toDomain(rawExercise): Exercise {
     const exerciseOrError = Exercise.create(
       {
         userId: new UniqueEntityID(rawExercise.user_id),
-        content: rawExercise.content,
-        createdAt: rawExercise.createdAt,
+        user: User.create(
+          {
+            name: UserName.create({
+              name: rawExercise.user.name,
+            }).getValue(),
+          },
+          new UniqueEntityID(rawExercise.user.id)
+        ).getValue(),
+        content: ExerciseContent.create({
+          content: rawExercise.content,
+        }).getValue(),
+        createdAt: rawExercise.created_at,
       },
       new UniqueEntityID(rawExercise.id)
     )

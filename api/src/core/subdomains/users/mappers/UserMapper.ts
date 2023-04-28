@@ -1,11 +1,20 @@
 import { UniqueEntityID } from 'src/core/shared/domain/UniqueEntityId'
 
+import { ExerciseMapper } from '../../exercises/mappers/ExerciseMapper'
 import { User } from '../domain/User'
 
 export class UserMapper {
   static toDomain(rawUser) {
     const userOrError = User.create(
-      { name: rawUser.name },
+      {
+        name: rawUser.name,
+        exercises: rawUser.exercises.map((rawExercise) => {
+          return ExerciseMapper.toDomain({
+            ...rawExercise,
+            user: { name: rawUser.name },
+          })
+        }),
+      },
       new UniqueEntityID(rawUser.id)
     )
     if (userOrError.isFailure) {

@@ -3,15 +3,8 @@ import { AppError } from 'src/core/shared/core/AppError'
 import { Either, Result, left, right } from 'src/core/shared/core/Result/Result'
 
 import { Exercise } from '../../domain/Exercise'
-import { User } from '../../domain/User'
 import { IExerciseRepo } from '../../repos/IExerciseRepo'
-import { IUserRepo } from '../../repos/IUserRepo'
-
-import { GetAllExercisesErrors } from './GetAllExercisesErrors'
-
-export interface GetAllExercisesRequest {
-  userId: string
-}
+import { IUserRepo } from '../../../users/repos/IUserRepo'
 
 export interface ExerciseDTO {
   id: string
@@ -24,12 +17,12 @@ export interface ExerciseDTO {
 }
 
 export type GetAllExercisesResponse = Either<
-  GetAllExercisesErrors.UserNotFound | AppError.UnexpectedError | Result<any>,
+  AppError.UnexpectedError | Result<any>,
   Result<ExerciseDTO[]>
 >
 
 export class GetAllExercisesUseCase
-  implements UseCase<GetAllExercisesRequest, Promise<GetAllExercisesResponse>>
+  implements UseCase<void, Promise<GetAllExercisesResponse>>
 {
   private userRepo: IUserRepo
   private exerciseRepo: IExerciseRepo
@@ -39,32 +32,22 @@ export class GetAllExercisesUseCase
     this.exerciseRepo = exerciseRepo
   }
 
-  public async execute(
-    request: GetAllExercisesRequest
-  ): Promise<GetAllExercisesResponse> {
-    let user: User
+  public async execute(): Promise<GetAllExercisesResponse> {
     let exercises: Exercise[]
 
     try {
-      user = await this.userRepo.getUserById(request.userId)
-    } catch (err) {
-      return left(new AppError.UnexpectedError(err))
-    }
-
-    try {
-      exercises = await this.exerciseRepo.getExercisesByUserId(request.userId)
+      exercises = await this.exerciseRepo.getAll()
       const exercisesDTO: ExerciseDTO[] = exercises.map((exercise) => {
         return {
           id: exercise.id.toString(),
           user_id: exercise.userId.toString(),
           content: exercise.content.value,
-          created_at: exercise.createdAt.toISOString(),
+          created_at: exercise.createdAt,
           user: {
-            name: user.name.value,
+            name: exercise.user.name.value,
           },
         }
       })
-
       return right(Result.ok<ExerciseDTO[]>(exercisesDTO))
     } catch (err) {
       return left(new AppError.UnexpectedError(err))

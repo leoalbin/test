@@ -10,6 +10,9 @@ export class PrismaUsersRepo implements IUserRepo {
       where: {
         id: userId,
       },
+      include: {
+        exercises: true,
+      },
     })
 
     if (!rawUser) {

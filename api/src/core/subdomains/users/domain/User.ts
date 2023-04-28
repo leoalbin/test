@@ -3,7 +3,8 @@ import { Result } from 'src/core/shared/core/Result/Result'
 import { AggregateRoot } from 'src/core/shared/domain/AggregateRoot'
 import { UniqueEntityID } from 'src/core/shared/domain/UniqueEntityId'
 
-import { Exercise } from './Exercise'
+import { Exercise } from '../../exercises/domain/Exercise'
+
 import { UserName } from './UserName'
 
 interface UserProps {
