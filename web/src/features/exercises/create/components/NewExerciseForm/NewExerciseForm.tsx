@@ -7,10 +7,7 @@ import {
   Label,
   TextAreaField,
   TextField,
-  useForm,
 } from '@redwoodjs/forms'
-import { navigate, routes } from '@redwoodjs/router'
-import { useMutation } from '@redwoodjs/web'
 
 import { Button } from 'src/atoms/Button'
 import { Spacer } from 'src/atoms/Spacers'
@@ -18,43 +15,15 @@ import { Text } from 'src/atoms/Text'
 
 import Card from '../../../../../components/Card/Card'
 
+import { useNewExercise } from './hooks/useNewExercise'
+
 const inputClass =
   'appearance-none w-50 mr-10 bg-slate-200 dark:bg-slate-500 block text-sm text-slate-900 dark:text-white p-2 rounded focus:outline-none focus:bg-slate-400 opacity-60 focus:opacity-100'
 
 const errorInputClass = `${inputClass} border border-red-300`
 
 const NewExerciseForm = () => {
-  const formMethods = useForm({
-    reValidateMode: 'onBlur',
-    shouldFocusError: true,
-  })
-  const formState = formMethods.formState
-
-  const onSubmit = (data) => {
-    createExercise({
-      variables: {
-        input: {
-          userId: data.userId,
-          content: data.content,
-        },
-      },
-    })
-  }
-
-  const CreateExercise = gql`
-    mutation CreateExerciseMutation($input: CreateExerciseInput!) {
-      createExercise(input: $input) {
-        status
-      }
-    }
-  `
-
-  const [createExercise, { loading, error }] = useMutation(CreateExercise, {
-    onCompleted: () => {
-      navigate(routes.exercises())
-    },
-  })
-
+  const { formMethods, onSubmit, error, loading, formState } = useNewExercise()
   return (
     <Card>
       <Form formMethods={formMethods} onSubmit={onSubmit}>
@@ -66,7 +35,6 @@ const NewExerciseForm = () => {
           <TextField
             className={inputClass}
             errorClassName={errorInputClass}
-            // required
             name="userId"
             validation={{
               required: 'User id required',
