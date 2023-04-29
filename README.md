@@ -31,6 +31,30 @@ The error handling is also separated into layers, there are use case errors, and
 
 On the database modeling I created the entities following the specs. I set a relation 1-n, one User many `Excercises` setting the `userId` prop in Exercise as a foreign key to the User’s id. We have two separate tables to normalize the data, will make no sense to store the same user in each Exercise row. We are setting constraints in the IDs of the User and the Exercise as primary keys.
 
+
+The design patterns we are applying are:
+
+
+**Factory Method**
+
+We are using the creational pattern  creating instances of the domain objects throw a `create` method, to prevent the creation of an instance with invalid states.
+
+
+**Repository**
+
+We are using structural desing pattern `Repository` to wrap Prisma's API to create different repositories interfaces with an API related to our domain.
+
+
+**Result object**
+
+The `Result` object is not an official design pattern, but is well known to handle success or failure states. We use it to emit errors from the domain layer to the application layer.
+
+
+**Either monad**
+
+It's not a OOP design pattern, is a functional technic to handle errors. We are using it to type the errors on the applciation layer and handle them in the infrastructure layer.
+
+
 Things I would like to add:
 
 - Authentication and authorization to the controllers
@@ -57,7 +81,7 @@ We organize the project around features to improve the discoverability of the co
 
 **Single Responsibility**
 
-We try to make the components as small and simple as possible. We prefer to use children composition than passing big amounts of properties to compose small building blocks into bigger structures. It also renders more efficiently.
+We try to make the components as small and simple as possible. We prefer to use children composition than passing big amounts of properties to compose small building blocks into bigger structures. It also renders more efficiently. We also used the custom hook pattern in NewExerciseForm.tsx to separate logic from presentation, moving all things related to states into the custom hook useNewExercise(). This is a technic that replaced container-presenter pattern after the arrival of hooks.
 
 **Higher Order Component**
 

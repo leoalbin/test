@@ -7,7 +7,7 @@ import { Title } from 'src/atoms/Title'
 import NewExerciseForm from 'src/features/exercises/create/components/NewExerciseForm/NewExerciseForm'
 import AppLayout from 'src/layouts/AppLayout/AppLayout'
 
-import { ExercisesTopBar } from '../../../list/pages/ExercisesPage/ExercisesTopBar'
+import { ExercisesTopBar } from '../../../list/components/ExercisesTopBar'
 
 const CreateExercisePage = () => {
   return (

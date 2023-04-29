@@ -8,7 +8,7 @@ import { Title } from 'src/atoms/Title'
 import ExercisesList from 'src/features/exercises/list/components/ExercisesList/ExercisesList'
 import AppLayout from 'src/layouts/AppLayout/AppLayout'
 
-import { ExercisesTopBar } from './ExercisesTopBar'
+import { ExercisesTopBar } from '../../components/ExercisesTopBar'
 
 const ExercisesPage = () => {
   return (
