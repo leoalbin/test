@@ -104,10 +104,9 @@ Start by installing dependencies:
 yarn install
 ```
 
-Then change into that directory and start the development server:
+Then start the development server:
 
 ```
-cd my-redwood-project
 yarn redwood dev
 ```
 
@@ -116,9 +115,21 @@ Your browser should automatically open to http://localhost:8910 where you'll see
 
 ## Testing with Jest
 
-It'd be hard to scale from side project to startup without a few tests.
-Redwood fully integrates Jest with the front and the backends and makes it easy to keep your whole app covered by generating test files with all your components and services:
+To run all the tests:
 
 ```
 yarn rw test
+```
+
+To run just backend tests:
+
+
+```
+yarn rw test api
+```
+
+Just front end tests:
+
+```
+yarn rw test web
 ```

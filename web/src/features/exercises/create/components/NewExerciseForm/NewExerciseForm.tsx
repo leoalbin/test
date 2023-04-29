@@ -9,6 +9,7 @@ import {
   TextField,
   useForm,
 } from '@redwoodjs/forms'
+import { navigate, routes } from '@redwoodjs/router'
 import { useMutation } from '@redwoodjs/web'
 
 import { Button } from 'src/atoms/Button'
@@ -48,7 +49,11 @@ const NewExerciseForm = () => {
     }
   `
 
-  const [createExercise, { loading, error }] = useMutation(CreateExercise)
+  const [createExercise, { loading, error }] = useMutation(CreateExercise, {
+    onCompleted: () => {
+      navigate(routes.exercises())
+    },
+  })
 
   return (
     <Card>
