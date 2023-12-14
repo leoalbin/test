@@ -1,4 +1,4 @@
-import { UniqueEntityID } from 'src/core/shared/domain/UniqueEntityId'
+import { UniqueEntityID } from 'src/Contexts/Shared/domain/UniqueEntityId'
 
 import { User } from '../../users/domain/User'
 import { UserName } from '../../users/domain/UserName'

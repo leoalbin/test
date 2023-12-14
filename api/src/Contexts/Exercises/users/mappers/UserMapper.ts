@@ -1,4 +1,4 @@
-import { UniqueEntityID } from 'src/core/shared/domain/UniqueEntityId'
+import { UniqueEntityID } from 'src/Contexts/Shared/domain/UniqueEntityId'
 
 import { ExerciseMapper } from '../../exercises/mappers/ExerciseMapper'
 import { User } from '../domain/User'

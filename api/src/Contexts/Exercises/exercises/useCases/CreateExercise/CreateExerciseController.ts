@@ -1,6 +1,6 @@
-import { BaseController } from 'src/core/shared/infra/BaseController'
+import { BaseController } from 'src/Contexts/Shared/infra/BaseController'
 
-import { TextUtils } from '../../../../shared/utils/TextUtils'
+import { TextUtils } from 'src/Contexts/Shared/utils/TextUtils'
 
 import { CreateExerciseErrors } from './CreateExerciseErrors'
 import {

@@ -1,10 +1,15 @@
-import { UseCase } from 'src/core/shared/application/UseCase'
-import { AppError } from 'src/core/shared/core/AppError'
-import { Either, Result, left, right } from 'src/core/shared/core/Result/Result'
+import { UseCase } from 'src/Contexts/Shared/application/UseCase'
+import { AppError } from 'src/Contexts/Shared/core/AppError'
+import {
+  Either,
+  Result,
+  left,
+  right,
+} from 'src/Contexts/Shared/core/Result/Result'
 
+import { IUserRepo } from '../../../users/repos/IUserRepo'
 import { Exercise } from '../../domain/Exercise'
 import { IExerciseRepo } from '../../repos/IExerciseRepo'
-import { IUserRepo } from '../../../users/repos/IUserRepo'
 
 export interface ExerciseDTO {
   id: string

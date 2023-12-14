@@ -1,6 +1,6 @@
-import { Result } from 'src/core/shared/core/Result/Result'
-import { Entity } from 'src/core/shared/domain/Entity'
-import { UniqueEntityID } from 'src/core/shared/domain/UniqueEntityId'
+import { Result } from 'src/Contexts/Shared/core/Result/Result'
+import { Entity } from 'src/Contexts/Shared/domain/Entity'
+import { UniqueEntityID } from 'src/Contexts/Shared/domain/UniqueEntityId'
 
 import { User } from '../../users/domain/User'
 

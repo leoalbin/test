@@ -6425,6 +6425,16 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@types/jest@npm:^29.5.11":
+  version: 29.5.11
+  resolution: "@types/jest@npm:29.5.11"
+  dependencies:
+    expect: ^29.0.0
+    pretty-format: ^29.0.0
+  checksum: 524a3394845214581278bf4d75055927261fbeac7e1a89cd621bd0636da37d265fe0a85eac58b5778758faad1cbd7c7c361dfc190c78ebde03a91cce33463261
+  languageName: node
+  linkType: hard
+
 "@types/js-levenshtein@npm:^1.1.1":
   version: 1.1.1
   resolution: "@types/js-levenshtein@npm:1.1.1"
@@ -21294,6 +21304,7 @@ __metadata:
   resolution: "root-workspace-0b6124@workspace:."
   dependencies:
     "@redwoodjs/core": 5.0.1
+    "@types/jest": ^29.5.11
     prettier-plugin-tailwindcss: ^0.2.7
   languageName: unknown
   linkType: soft

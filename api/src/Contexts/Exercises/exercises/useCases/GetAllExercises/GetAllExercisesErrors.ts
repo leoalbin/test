@@ -1,7 +1,7 @@
 /* eslint-disable @typescript-eslint/no-namespace */
 
-import { UseCaseError } from 'src/core/shared/application/UseCaseError'
-import { Result } from 'src/core/shared/core/Result/Result'
+import { UseCaseError } from 'src/Contexts/Shared/application/UseCaseError'
+import { Result } from 'src/Contexts/Shared/core/Result/Result'
 
 export namespace GetAllExercisesErrors {
   export class UserNotFound extends Result<UseCaseError> {

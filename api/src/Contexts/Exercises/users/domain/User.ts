@@ -1,7 +1,7 @@
-import { Guard } from 'src/core/shared/core/Result/Guard'
-import { Result } from 'src/core/shared/core/Result/Result'
-import { AggregateRoot } from 'src/core/shared/domain/AggregateRoot'
-import { UniqueEntityID } from 'src/core/shared/domain/UniqueEntityId'
+import { Guard } from 'src/Contexts/Shared/core/Result/Guard'
+import { Result } from 'src/Contexts/Shared/core/Result/Result'
+import { AggregateRoot } from 'src/Contexts/Shared/domain/AggregateRoot'
+import { UniqueEntityID } from 'src/Contexts/Shared/domain/UniqueEntityId'
 
 import { Exercise } from '../../exercises/domain/Exercise'
 

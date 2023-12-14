@@ -1,7 +1,6 @@
-import { Guard } from 'src/core/shared/core/Result/Guard'
-import { Result } from 'src/core/shared/core/Result/Result'
-
-import { ValueObject } from '../../../shared/domain/ValueObject'
+import { Guard } from 'src/Contexts/Shared/core/Result/Guard'
+import { Result } from 'src/Contexts/Shared/core/Result/Result'
+import { ValueObject } from 'src/Contexts/Shared/domain/ValueObject'
 
 interface UserNameProps {
   name: string

@@ -1,4 +1,4 @@
-import { BaseController } from 'src/core/shared/infra/BaseController'
+import { BaseController } from 'src/Contexts/Shared/infra/BaseController'
 
 import { GetAllExercisesErrors } from './GetAllExercisesErrors'
 import {
